@@ -2,24 +2,27 @@ import { HandLandmarker, FilesetResolver, DrawingUtils }
   from "../assets/vision_bundle.mjs";
 import { startCamera } from "./camera.js";
 import { classifyGesture } from "./gestureClassifier.js";
-import { startRound, getState, resolveRound, onCountdownTick, onCapture, onResult, onIdle } from "./gameState.js";
+import { resolveRound, isCooldown, onResult, getScore } from "./gameState.js";
 import {
-  hideLoading, updateLoadingText, enableStartButton, disableStartButton,
-  updateScore, showGestureLabel, hideGestureLabel,
-  showCountdown, hideCountdown, showResult, showError, hideResult
+  hideLoading, updateLoadingText, updateScore,
+  showPlayerGesture, showComputerGesture,
+  showResult, hideResult, setHint
 } from "./ui.js";
 
 let handLandmarker;
 let drawingUtils;
-let lastGesture = "UNKNOWN";
 let videoReady = false;
+
+// 手势稳定检测：连续 N 帧识别到同一手势才触发
+let stableGesture = "UNKNOWN";
+let stableCount = 0;
+const STABLE_THRESHOLD = 8; // 约 0.25 秒（30fps × 8 ≈ 267ms）
 
 async function init() {
   try {
-    // 并行启动摄像头和加载模型，缩短总等待时间
     updateLoadingText("正在初始化...");
 
-    const [video, vision] = await Promise.all([
+    const [video] = await Promise.all([
       startCamera().catch((err) => {
         updateLoadingText("摄像头启动失败，请检查权限设置");
         throw err;
@@ -29,6 +32,7 @@ async function init() {
 
     videoReady = true;
 
+    // Canvas 只画手部骨架，不显示视频画面
     const canvas = document.getElementById("overlay");
     const ctx = canvas.getContext("2d");
     canvas.width = video.videoWidth;
@@ -36,45 +40,33 @@ async function init() {
     drawingUtils = new DrawingUtils(ctx);
 
     hideLoading();
-    enableStartButton();
-
-    // Wire game state callbacks
-    onCountdownTick((n) => {
-      disableStartButton("倒计时...");
-      showCountdown(n);
-    });
-
-    onCapture(() => {
-      hideCountdown();
-      hideGestureLabel();
-      if (lastGesture === "UNKNOWN") {
-        showError("未检测到有效手势，请重试");
-        setTimeout(() => {
-          hideResult();
-          enableStartButton();
-        }, 2000);
-      } else {
-        resolveRound(lastGesture);
-      }
-    });
+    updateScore(getScore());
+    setHint("举起手势开始对战");
 
     onResult((player, computer, result) => {
-      showResult(player, computer, result);
+      showComputerGesture(computer);
+      showResult(result);
       updateScore(getScore());
-      disableStartButton("下一轮...");
+
+      const names = { WIN: "你赢了！", LOSE: "你输了！", DRAW: "平局！" };
+      setHint(`${gestureCN(player)} vs ${gestureCN(computer)} — ${names[result]}`);
+
+      setTimeout(() => {
+        hideResult();
+        setHint("举起手势继续对战");
+      }, 1500);
     });
 
-    onIdle(() => {
-      hideResult();
-      enableStartButton();
-    });
-
-    document.getElementById("start-btn").addEventListener("click", () => startRound());
     detectLoop(video, canvas, ctx);
   } catch (err) {
     console.error("初始化失败:", err);
     updateLoadingText("初始化失败，请刷新页面重试。");
   }
+}
+
+function gestureCN(g) {
+  const map = { ROCK: "石头", PAPER: "布", SCISSORS: "剪刀" };
+  return map[g] || g;
 }
 
 async function loadModel() {
@@ -116,6 +108,7 @@ function detectLoop(video, canvas, ctx) {
   if (results.landmarks && results.landmarks.length > 0) {
     const landmarks = results.landmarks[0];
 
+    // 只画手部骨架，背景透明（视频 opacity:0）
     drawingUtils.drawConnectors(landmarks, HandLandmarker.HAND_CONNECTIONS, {
       color: "#00FF88",
       lineWidth: 3
@@ -126,15 +119,29 @@ function detectLoop(video, canvas, ctx) {
       radius: 4
     });
 
-    lastGesture = classifyGesture(landmarks);
+    const gesture = classifyGesture(landmarks);
+    showPlayerGesture(gesture);
 
-    const state = getState();
-    if (state === "IDLE") {
-      showGestureLabel(lastGesture);
+    // 手势稳定检测
+    if (gesture !== "UNKNOWN" && !isCooldown()) {
+      if (gesture === stableGesture) {
+        stableCount++;
+      } else {
+        stableGesture = gesture;
+        stableCount = 1;
+      }
+
+      // 手势稳定后自动触发对战
+      if (stableCount >= STABLE_THRESHOLD) {
+        resolveRound(gesture);
+        stableCount = 0;
+        stableGesture = "UNKNOWN";
+      }
     }
   } else {
-    lastGesture = "UNKNOWN";
-    hideGestureLabel();
+    showPlayerGesture("UNKNOWN");
+    stableGesture = "UNKNOWN";
+    stableCount = 0;
   }
 
   requestAnimationFrame(() => detectLoop(video, canvas, ctx));

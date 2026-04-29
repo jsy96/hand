@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>石头剪刀布 - MediaPipe 手势识别</title>
+  <title>石头剪刀布 - 手势对战</title>
   <link rel="stylesheet" href="css/style.css">
 </head>
 <body>
@@ -19,53 +19,52 @@
       <p>无法访问摄像头，请允许浏览器使用摄像头权限后刷新页面。</p>
     </div>
 
+    <!-- 顶部分数栏 -->
     <header>
-      <h1>石头剪刀布</h1>
-      <div id="scoreboard">
-        <div class="score-item">
-          <span class="score-label">你</span>
-          <span id="player-score" class="score-value">0</span>
-        </div>
-        <div class="score-separator">:</div>
-        <div class="score-item">
-          <span class="score-label">电脑</span>
-          <span id="computer-score" class="score-value">0</span>
-        </div>
+      <div class="score-side player-side">
+        <span class="score-label">你</span>
+        <span id="player-score" class="score-value">0</span>
+      </div>
+      <div class="score-center">
+        <h1>石头剪刀布</h1>
+        <div id="round-info"></div>
+      </div>
+      <div class="score-side computer-side">
+        <span class="score-label">电脑</span>
+        <span id="computer-score" class="score-value">0</span>
       </div>
     </header>
 
+    <!-- 主对战区 -->
     <main>
-      <div id="video-container">
-        <video id="webcam" autoplay playsinline></video>
-        <canvas id="overlay"></canvas>
-
-        <!-- 实时手势标签 -->
-        <div id="gesture-label" style="display:none;"></div>
-
-        <!-- 倒计时 -->
-        <div id="countdown-display"></div>
-
-        <!-- 结果覆盖层 -->
-        <div id="result-overlay" style="display:none;">
-          <div class="result-gestures">
-            <div class="result-side">
-              <div id="result-player-gesture" class="gesture-emoji">?</div>
-              <span class="result-name">你</span>
-            </div>
-            <div class="result-vs">VS</div>
-            <div class="result-side">
-              <div id="result-computer-gesture" class="gesture-emoji">?</div>
-              <span class="result-name">电脑</span>
-            </div>
+      <div class="arena">
+        <!-- 电脑（左） -->
+        <div class="fighter fighter-computer">
+          <div id="computer-display" class="gesture-display">
+            <span class="gesture-emoji">🤖</span>
           </div>
-          <div id="result-text"></div>
+          <div class="fighter-label">电脑</div>
+        </div>
+
+        <!-- VS 分隔 -->
+        <div id="vs-badge" class="vs-badge">VS</div>
+
+        <!-- 玩家（右） -->
+        <div class="fighter fighter-player">
+          <div class="gesture-display">
+            <video id="webcam" autoplay playsinline></video>
+            <canvas id="overlay"></canvas>
+            <div id="player-emoji" class="gesture-emoji-overlay" style="display:none;"></div>
+          </div>
+          <div class="fighter-label">你</div>
         </div>
       </div>
 
-      <div id="controls">
-        <button id="start-btn" disabled>等待加载...</button>
-        <p id="hint-text">对准摄像头展示手势，点击按钮开始</p>
-      </div>
+      <!-- 结果提示 -->
+      <div id="result-banner" class="result-banner" style="display:none;"></div>
+
+      <!-- 底部提示 -->
+      <div id="hint-text" class="hint-text">举起手势开始对战</div>
     </main>
   </div>
 

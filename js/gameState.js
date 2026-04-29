@@ -1,39 +1,16 @@
-const STATES = { IDLE: "IDLE", COUNTDOWN: "COUNTDOWN", CAPTURE: "CAPTURE", RESULT: "RESULT" };
+let score = { player: 0, computer: 0, draws: 0, rounds: 0 };
+let cooldown = false;
 
-let state = STATES.IDLE;
-let score = { player: 0, computer: 0, draws: 0 };
+const onResultCb = [];
 
-let onCountdownTickCb = null;
-let onCaptureCb = null;
-let onResultCb = null;
-let onIdleCb = null;
-
-export function onCountdownTick(cb) { onCountdownTickCb = cb; }
-export function onCapture(cb) { onCaptureCb = cb; }
-export function onResult(cb) { onResultCb = cb; }
-export function onIdle(cb) { onIdleCb = cb; }
-
-export function getState() { return state; }
+export function onResult(cb) { onResultCb.push(cb); }
 export function getScore() { return score; }
-
-function delay(ms) { return new Promise((r) => setTimeout(r, ms)); }
-
-export function startRound() {
-  if (state !== STATES.IDLE) return;
-  state = STATES.COUNTDOWN;
-  runCountdown();
-}
-
-async function runCountdown() {
-  for (let i = 3; i >= 1; i--) {
-    if (onCountdownTickCb) onCountdownTickCb(i);
-    await delay(1000);
-  }
-  state = STATES.CAPTURE;
-  if (onCaptureCb) onCaptureCb();
-}
+export function isCooldown() { return cooldown; }
 
 export function resolveRound(playerGesture) {
+  if (cooldown) return;
+  cooldown = true;
+
   const choices = ["ROCK", "PAPER", "SCISSORS"];
   const computerGesture = choices[Math.floor(Math.random() * 3)];
   const result = determineWinner(playerGesture, computerGesture);
@@ -41,14 +18,11 @@ export function resolveRound(playerGesture) {
   if (result === "WIN") score.player++;
   else if (result === "LOSE") score.computer++;
   else score.draws++;
+  score.rounds++;
 
-  state = STATES.RESULT;
-  if (onResultCb) onResultCb(playerGesture, computerGesture, result);
+  onResultCb.forEach((cb) => cb(playerGesture, computerGesture, result));
 
-  setTimeout(() => {
-    state = STATES.IDLE;
-    if (onIdleCb) onIdleCb();
-  }, 3000);
+  setTimeout(() => { cooldown = false; }, 1800);
 }
 
 function determineWinner(player, computer) {
