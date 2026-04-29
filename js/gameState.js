@@ -7,6 +7,8 @@ export function onResult(cb) { onResultCb.push(cb); }
 export function getScore() { return score; }
 export function isCooldown() { return cooldown; }
 
+export function resetCooldown() { cooldown = false; }
+
 export function resolveRound(playerGesture) {
   if (cooldown) return;
   cooldown = true;
@@ -21,8 +23,6 @@ export function resolveRound(playerGesture) {
   score.rounds++;
 
   onResultCb.forEach((cb) => cb(playerGesture, computerGesture, result));
-
-  setTimeout(() => { cooldown = false; }, 1800);
 }
 
 function determineWinner(player, computer) {
