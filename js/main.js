@@ -1,5 +1,5 @@
 import { HandLandmarker, FilesetResolver, DrawingUtils }
-  from "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22/vision_bundle.mjs";
+  from "../assets/vision_bundle.mjs";
 import { startCamera } from "./camera.js";
 import { classifyGesture } from "./gestureClassifier.js";
 import { startRound, getState, resolveRound, onCountdownTick, onCapture, onResult, onIdle } from "./gameState.js";
@@ -16,28 +16,17 @@ let videoReady = false;
 
 async function init() {
   try {
-    updateLoadingText("正在加载手势识别模型...");
+    // 并行启动摄像头和加载模型，缩短总等待时间
+    updateLoadingText("正在初始化...");
 
-    const vision = await FilesetResolver.forVisionTasks(
-      "https://cdn.jsdelivr.net/npm/@mediapipe/tasks-vision@0.10.22/wasm"
-    );
+    const [video, vision] = await Promise.all([
+      startCamera().catch((err) => {
+        updateLoadingText("摄像头启动失败，请检查权限设置");
+        throw err;
+      }),
+      loadModel()
+    ]);
 
-    handLandmarker = await HandLandmarker.createFromOptions(vision, {
-      baseOptions: {
-        modelAssetPath:
-          "https://storage.googleapis.com/mediapipe-models/hand_landmarker/hand_landmarker/float16/latest/hand_landmarker.task",
-        delegate: "GPU"
-      },
-      numHands: 1,
-      runningMode: "VIDEO",
-      minHandDetectionConfidence: 0.5,
-      minHandPresenceConfidence: 0.5,
-      minTrackingConfidence: 0.5
-    });
-
-    updateLoadingText("正在启动摄像头...");
-
-    const video = await startCamera();
     videoReady = true;
 
     const canvas = document.getElementById("overlay");
@@ -80,15 +69,32 @@ async function init() {
       enableStartButton();
     });
 
-    // Bind start button
     document.getElementById("start-btn").addEventListener("click", () => startRound());
-
-    // Start detection loop
     detectLoop(video, canvas, ctx);
   } catch (err) {
     console.error("初始化失败:", err);
     updateLoadingText("初始化失败，请刷新页面重试。");
   }
+}
+
+async function loadModel() {
+  updateLoadingText("正在加载手势识别模型...");
+
+  const vision = await FilesetResolver.forVisionTasks("./assets/wasm");
+
+  handLandmarker = await HandLandmarker.createFromOptions(vision, {
+    baseOptions: {
+      modelAssetPath: "./assets/models/hand_landmarker.task",
+      delegate: "GPU"
+    },
+    numHands: 1,
+    runningMode: "VIDEO",
+    minHandDetectionConfidence: 0.5,
+    minHandPresenceConfidence: 0.5,
+    minTrackingConfidence: 0.5
+  });
+
+  return vision;
 }
 
 let lastTimestamp = -1;
