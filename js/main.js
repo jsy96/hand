@@ -6,7 +6,7 @@ import { resolveRound, isCooldown, onResult, getScore } from "./gameState.js";
 import { playWin, playLose } from "./sound.js";
 import {
   hideLoading, updateLoadingText, updateScore,
-  showPlayerGesture, showComputerGesture,
+  showPlayerGesture, showComputerGesture, hideComputerGesture,
   showResult, hideResult, setHint
 } from "./ui.js";
 
@@ -57,6 +57,7 @@ async function init() {
 
       setTimeout(() => {
         hideResult();
+        hideComputerGesture();
         setHint("举起手势继续对战");
       }, 1500);
     });

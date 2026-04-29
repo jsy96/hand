@@ -29,9 +29,16 @@ export function showPlayerGesture(gesture) {
 export function showComputerGesture(gesture) {
   const el = $id("computer-display").querySelector(".gesture-emoji");
   el.textContent = getGestureEmoji(gesture);
+  el.style.visibility = "visible";
   el.classList.remove("pop");
   void el.offsetWidth;
   el.classList.add("pop");
+}
+
+export function hideComputerGesture() {
+  const el = $id("computer-display").querySelector(".gesture-emoji");
+  el.style.visibility = "hidden";
+  el.classList.remove("pop");
 }
 
 export function showResult(result) {
