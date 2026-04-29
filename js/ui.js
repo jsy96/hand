@@ -6,6 +6,10 @@ export function hideLoading() {
   $id("loading-overlay").classList.add("hidden");
 }
 
+export function hideModelLoading() {
+  $id("model-loading").classList.add("hidden");
+}
+
 export function updateLoadingText(text) {
   $id("loading-text").textContent = text;
 }

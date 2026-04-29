@@ -7,7 +7,7 @@ import { playWin, playLose, playDraw } from "./sound.js";
 import {
   hideLoading, updateLoadingText, updateScore,
   showPlayerGesture, showComputerGesture, hideComputerGesture,
-  showResult, hideResult, setHint
+  showResult, hideResult, setHint, hideModelLoading
 } from "./ui.js";
 
 let handLandmarker;
@@ -21,26 +21,27 @@ const STABLE_THRESHOLD = 8; // 约 0.25 秒（30fps × 8 ≈ 267ms）
 
 async function init() {
   try {
-    updateLoadingText("正在初始化...");
+    // 1. 先启动摄像头，立刻显示游戏界面
+    const video = await startCamera().catch((err) => {
+      updateLoadingText("摄像头启动失败，请检查权限设置");
+      throw err;
+    });
 
-    const [video] = await Promise.all([
-      startCamera().catch((err) => {
-        updateLoadingText("摄像头启动失败，请检查权限设置");
-        throw err;
-      }),
-      loadModel()
-    ]);
+    hideLoading();
+    setHint("模型加载中，请稍候...");
 
-    videoReady = true;
+    // 2. 后台加载模型（preload 标签已提前开始下载）
+    await loadModel();
 
-    // Canvas 只画手部骨架，不显示视频画面
+    // 3. 模型就绪，设置 canvas 和检测循环
     const canvas = document.getElementById("overlay");
     const ctx = canvas.getContext("2d");
     canvas.width = video.videoWidth;
     canvas.height = video.videoHeight;
     drawingUtils = new DrawingUtils(ctx);
 
-    hideLoading();
+    videoReady = true;
+    hideModelLoading();
     updateScore(getScore());
     setHint("举起手势开始对战");
 
