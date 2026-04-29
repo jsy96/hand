@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>石头剪刀布 - MediaPipe 手势识别</title>
+  <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+  <div id="app">
+    <!-- 加载遮罩 -->
+    <div id="loading-overlay">
+      <div class="spinner"></div>
+      <p id="loading-text">正在加载手势识别模型...</p>
+    </div>
+
+    <!-- 摄像头权限错误 -->
+    <div id="camera-error" style="display:none;">
+      <p>无法访问摄像头，请允许浏览器使用摄像头权限后刷新页面。</p>
+    </div>
+
+    <header>
+      <h1>石头剪刀布</h1>
+      <div id="scoreboard">
+        <div class="score-item">
+          <span class="score-label">你</span>
+          <span id="player-score" class="score-value">0</span>
+        </div>
+        <div class="score-separator">:</div>
+        <div class="score-item">
+          <span class="score-label">电脑</span>
+          <span id="computer-score" class="score-value">0</span>
+        </div>
+      </div>
+    </header>
+
+    <main>
+      <div id="video-container">
+        <video id="webcam" autoplay playsinline></video>
+        <canvas id="overlay"></canvas>
+
+        <!-- 实时手势标签 -->
+        <div id="gesture-label" style="display:none;"></div>
+
+        <!-- 倒计时 -->
+        <div id="countdown-display"></div>
+
+        <!-- 结果覆盖层 -->
+        <div id="result-overlay" style="display:none;">
+          <div class="result-gestures">
+            <div class="result-side">
+              <div id="result-player-gesture" class="gesture-emoji">?</div>
+              <span class="result-name">你</span>
+            </div>
+            <div class="result-vs">VS</div>
+            <div class="result-side">
+              <div id="result-computer-gesture" class="gesture-emoji">?</div>
+              <span class="result-name">电脑</span>
+            </div>
+          </div>
+          <div id="result-text"></div>
+        </div>
+      </div>
+
+      <div id="controls">
+        <button id="start-btn" disabled>等待加载...</button>
+        <p id="hint-text">对准摄像头展示手势，点击按钮开始</p>
+      </div>
+    </main>
+  </div>
+
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>
