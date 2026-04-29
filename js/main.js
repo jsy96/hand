@@ -3,6 +3,7 @@ import { HandLandmarker, FilesetResolver, DrawingUtils }
 import { startCamera } from "./camera.js";
 import { classifyGesture } from "./gestureClassifier.js";
 import { resolveRound, isCooldown, onResult, getScore } from "./gameState.js";
+import { playWin, playLose } from "./sound.js";
 import {
   hideLoading, updateLoadingText, updateScore,
   showPlayerGesture, showComputerGesture,
@@ -47,6 +48,9 @@ async function init() {
       showComputerGesture(computer);
       showResult(result);
       updateScore(getScore());
+
+      if (result === "WIN") playWin();
+      else if (result === "LOSE") playLose();
 
       const names = { WIN: "你赢了！", LOSE: "你输了！", DRAW: "平局！" };
       setHint(`${gestureCN(player)} vs ${gestureCN(computer)} — ${names[result]}`);
