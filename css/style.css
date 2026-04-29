@@ -6,7 +6,11 @@
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background: #0f0f1a;
+  background: #0b0b1a;
+  background-image:
+    radial-gradient(ellipse at 20% 50%, rgba(108, 99, 255, 0.12) 0%, transparent 50%),
+    radial-gradient(ellipse at 80% 50%, rgba(233, 30, 99, 0.1) 0%, transparent 50%),
+    radial-gradient(ellipse at 50% 100%, rgba(0, 230, 118, 0.06) 0%, transparent 40%);
   color: #fff;
   height: 100vh;
   overflow: hidden;
@@ -157,6 +161,7 @@ main {
 .fighter-computer .gesture-display {
   background: linear-gradient(145deg, #1a1a2e, #16213e);
   border: 2px solid rgba(233, 30, 99, 0.3);
+  box-shadow: 0 0 40px rgba(233, 30, 99, 0.08), inset 0 0 60px rgba(233, 30, 99, 0.04);
 }
 
 .fighter-computer .gesture-emoji {
@@ -170,8 +175,9 @@ main {
 
 /* Player display */
 .fighter-player .gesture-display {
-  background: #0a0a14;
+  background: radial-gradient(circle at 50% 50%, #12122a, #0a0a14);
   border: 2px solid rgba(108, 99, 255, 0.3);
+  box-shadow: 0 0 40px rgba(108, 99, 255, 0.08), inset 0 0 60px rgba(108, 99, 255, 0.04);
 }
 
 #webcam {
@@ -199,14 +205,15 @@ main {
   bottom: 10px;
   right: 10px;
   font-size: 36px;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(108, 99, 255, 0.15);
+  border: 1px solid rgba(108, 99, 255, 0.3);
   width: 56px;
   height: 56px;
   display: flex;
   align-items: center;
   justify-content: center;
   border-radius: 14px;
-  backdrop-filter: blur(4px);
+  backdrop-filter: blur(8px);
 }
 
 .fighter-label {
@@ -217,10 +224,14 @@ main {
 
 /* VS badge */
 .vs-badge {
-  font-size: 20px;
-  font-weight: 800;
-  color: rgba(255, 255, 255, 0.25);
+  font-size: 22px;
+  font-weight: 900;
+  background: linear-gradient(135deg, rgba(108, 99, 255, 0.5), rgba(233, 30, 99, 0.5));
+  -webkit-background-clip: text;
+  -webkit-text-fill-color: transparent;
+  background-clip: text;
   flex-shrink: 0;
+  text-shadow: none;
 }
 
 /* ===== Result banner ===== */
@@ -244,17 +255,20 @@ main {
 
 .result-banner.win {
   color: #00e676;
-  background: rgba(0, 230, 118, 0.1);
+  background: rgba(0, 230, 118, 0.08);
+  border: 1px solid rgba(0, 230, 118, 0.2);
 }
 
 .result-banner.lose {
   color: #ff5252;
-  background: rgba(255, 82, 82, 0.1);
+  background: rgba(255, 82, 82, 0.08);
+  border: 1px solid rgba(255, 82, 82, 0.2);
 }
 
 .result-banner.draw {
   color: #ffeb3b;
-  background: rgba(255, 235, 59, 0.1);
+  background: rgba(255, 235, 59, 0.08);
+  border: 1px solid rgba(255, 235, 59, 0.2);
 }
 
 /* ===== Inline model loading ===== */
