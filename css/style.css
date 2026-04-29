@@ -96,12 +96,13 @@ header {
 }
 
 .score-value {
-  font-size: 42px;
-  font-weight: 800;
+  font-size: 56px;
+  font-weight: 900;
+  text-shadow: 0 0 30px currentColor;
 }
 
-.player-side .score-value { color: #6c63ff; }
-.computer-side .score-value { color: #e91e63; }
+.player-side .score-value { color: #8b83ff; }
+.computer-side .score-value { color: #ff4589; }
 
 .score-center {
   text-align: center;
