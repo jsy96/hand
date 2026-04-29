@@ -38,12 +38,12 @@ export function showResult(result) {
   const el = $id("result-banner");
   const labels = { WIN: "你赢了！", LOSE: "你输了！", DRAW: "平局！" };
   el.textContent = labels[result];
-  el.className = `result-banner ${result.toLowerCase()}`;
-  el.style.display = "block";
+  el.className = `result-banner ${result.toLowerCase()} visible`;
 }
 
 export function hideResult() {
-  $id("result-banner").style.display = "none";
+  const el = $id("result-banner");
+  el.classList.remove("visible");
 }
 
 export function setHint(text) {

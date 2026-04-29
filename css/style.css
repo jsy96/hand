@@ -8,17 +8,18 @@ body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
   background: #0f0f1a;
   color: #fff;
-  min-height: 100vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
+  height: 100vh;
+  overflow: hidden;
 }
 
 #app {
   width: 100%;
   max-width: 900px;
+  height: 100vh;
+  margin: 0 auto;
   padding: 16px;
-  position: relative;
+  display: flex;
+  flex-direction: column;
 }
 
 /* ===== Loading ===== */
@@ -71,8 +72,9 @@ header {
   display: flex;
   align-items: center;
   justify-content: space-between;
-  margin-bottom: 20px;
   padding: 0 10px;
+  flex-shrink: 0;
+  height: 70px;
 }
 
 .score-side {
@@ -114,9 +116,18 @@ header {
   font-size: 13px;
   color: rgba(255, 255, 255, 0.4);
   margin-top: 2px;
+  height: 18px;
 }
 
 /* ===== Arena ===== */
+main {
+  flex: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  min-height: 0;
+}
+
 .arena {
   display: flex;
   align-items: center;
@@ -219,12 +230,15 @@ header {
   padding: 12px;
   margin-top: 16px;
   border-radius: 12px;
-  animation: slideIn 0.3s ease;
+  height: 56px;
+  visibility: hidden;
+  opacity: 0;
+  transition: opacity 0.2s ease;
 }
 
-@keyframes slideIn {
-  from { transform: translateY(10px); opacity: 0; }
-  to { transform: translateY(0); opacity: 1; }
+.result-banner.visible {
+  visibility: visible;
+  opacity: 1;
 }
 
 .result-banner.win {
@@ -248,7 +262,8 @@ header {
   margin-top: 16px;
   font-size: 14px;
   color: rgba(255, 255, 255, 0.35);
-  min-height: 20px;
+  height: 20px;
+  flex-shrink: 0;
 }
 
 /* ===== Responsive ===== */
