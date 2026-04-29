@@ -78,7 +78,7 @@ header {
   justify-content: space-between;
   padding: 0 10px;
   flex-shrink: 0;
-  height: 70px;
+  height: 60px;
 }
 
 .score-side {
@@ -109,7 +109,7 @@ header {
 }
 
 .score-center h1 {
-  font-size: 22px;
+  font-size: 28px;
   font-weight: 700;
   background: linear-gradient(135deg, #6c63ff, #e91e63);
   -webkit-background-clip: text;
@@ -118,10 +118,10 @@ header {
 }
 
 #round-info {
-  font-size: 13px;
-  color: rgba(255, 255, 255, 0.4);
+  font-size: 16px;
+  color: rgba(255, 255, 255, 0.5);
   margin-top: 2px;
-  height: 18px;
+  height: 20px;
 }
 
 /* ===== Arena ===== */
@@ -137,19 +137,19 @@ main {
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: 16px;
+  gap: 12px;
 }
 
 .fighter {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 10px;
+  gap: 6px;
 }
 
 .gesture-display {
-  width: 280px;
-  height: 280px;
+  width: 260px;
+  height: 260px;
   border-radius: 24px;
   display: flex;
   align-items: center;
@@ -240,10 +240,10 @@ main {
   text-align: center;
   font-size: 28px;
   font-weight: 800;
-  padding: 12px;
-  margin-top: 16px;
+  padding: 10px;
+  margin-top: 10px;
   border-radius: 12px;
-  height: 56px;
+  height: 52px;
   visibility: hidden;
   opacity: 0;
   transition: opacity 0.2s ease;
@@ -301,7 +301,7 @@ main {
 /* ===== Hint ===== */
 .hint-text {
   text-align: center;
-  margin-top: 16px;
+  margin-top: 10px;
   font-size: 14px;
   color: rgba(255, 255, 255, 0.35);
   height: 20px;
@@ -310,12 +310,12 @@ main {
 
 /* ===== Responsive ===== */
 @media (max-width: 680px) {
-  #app { padding: 10px; }
-  .score-value { font-size: 32px; }
-  .gesture-display { width: 180px; height: 180px; border-radius: 18px; }
+  #app { padding: 8px; }
+  .score-value { font-size: 40px; }
+  .score-center h1 { font-size: 22px; }
+  #round-info { font-size: 14px; }
+  .gesture-display { width: 160px; height: 160px; border-radius: 18px; }
   .fighter-computer .gesture-emoji { font-size: 80px; }
   .result-banner { font-size: 22px; }
-  header { margin-bottom: 12px; }
-  .score-center h1 { font-size: 18px; }
   .gesture-emoji-overlay { font-size: 28px; width: 44px; height: 44px; }
 }
