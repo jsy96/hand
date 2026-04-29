@@ -40,3 +40,21 @@ export function playLose() {
     osc.stop(now + i * 0.12 + 0.5);
   });
 }
+
+export function playDraw() {
+  const ctx = getCtx();
+  const now = ctx.currentTime;
+
+  // 双音 E4+E4，短促重复
+  [329.63, 329.63].forEach((freq, i) => {
+    const osc = ctx.createOscillator();
+    const gain = ctx.createGain();
+    osc.type = "square";
+    osc.frequency.value = freq;
+    gain.gain.setValueAtTime(0.12, now + i * 0.15);
+    gain.gain.exponentialRampToValueAtTime(0.001, now + i * 0.15 + 0.2);
+    osc.connect(gain).connect(ctx.destination);
+    osc.start(now + i * 0.15);
+    osc.stop(now + i * 0.15 + 0.2);
+  });
+}
