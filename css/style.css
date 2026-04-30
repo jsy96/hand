@@ -71,7 +71,7 @@ body {
 header {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  gap: 12px;
   padding: 0 10px;
   flex-shrink: 0;
   height: 60px;
@@ -82,6 +82,12 @@ header {
   flex-direction: column;
   align-items: center;
   min-width: 80px;
+}
+
+.score-center {
+  text-align: center;
+  flex: 1;
+  min-width: 0;
 }
 
 .score-label {
@@ -99,10 +105,6 @@ header {
 
 .player-side .score-value { color: #8b83ff; }
 .computer-side .score-value { color: #ff4589; }
-
-.score-center {
-  text-align: center;
-}
 
 .score-center h1 {
   font-size: 36px;
