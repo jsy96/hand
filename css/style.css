@@ -83,7 +83,7 @@ header {
   align-items: center;
   min-width: 80px;
   position: absolute;
-  bottom: calc(100% + 60px);
+  bottom: calc(100% + 108px);
 }
 
 .score-center {
