@@ -6,11 +6,7 @@
 
 body {
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-  background: #0b0b1a;
-  background-image:
-    radial-gradient(ellipse at 20% 50%, rgba(108, 99, 255, 0.12) 0%, transparent 50%),
-    radial-gradient(ellipse at 80% 50%, rgba(233, 30, 99, 0.1) 0%, transparent 50%),
-    radial-gradient(ellipse at 50% 100%, rgba(0, 230, 118, 0.06) 0%, transparent 40%);
+  background: #0b0b1a url('../assets/images/backgroud.jpg') center / cover no-repeat fixed;
   color: #fff;
   height: 100vh;
   overflow: hidden;
@@ -24,6 +20,8 @@ body {
   padding: 16px;
   display: flex;
   flex-direction: column;
+  background: rgba(11, 11, 26, 0.7);
+  backdrop-filter: blur(2px);
 }
 
 /* ===== Loading ===== */
