@@ -21,19 +21,11 @@
       <p>无法访问摄像头，请允许浏览器使用摄像头权限后刷新页面。</p>
     </div>
 
-    <!-- 顶部分数栏 -->
+    <!-- 标题栏 -->
     <header>
-      <div class="score-side computer-side">
-        <span id="computer-score" class="score-value">0</span>
-        <span class="score-label">电脑</span>
-      </div>
       <div class="score-center">
         <h1>石头剪刀布</h1>
         <div id="round-info"></div>
-      </div>
-      <div class="score-side player-side">
-        <span id="player-score" class="score-value">0</span>
-        <span class="score-label">你</span>
       </div>
     </header>
 
@@ -42,10 +34,13 @@
       <div class="arena">
         <!-- 电脑（左） -->
         <div class="fighter fighter-computer">
+          <div class="score-side">
+            <span id="computer-score" class="score-value">0</span>
+            <span class="score-label">电脑</span>
+          </div>
           <div id="computer-display" class="gesture-display">
             <span class="gesture-emoji" style="visibility:hidden;">🤖</span>
           </div>
-          <div class="fighter-label">电脑</div>
         </div>
 
         <!-- VS 分隔 -->
@@ -53,6 +48,10 @@
 
         <!-- 玩家（右） -->
         <div class="fighter fighter-player">
+          <div class="score-side">
+            <span id="player-score" class="score-value">0</span>
+            <span class="score-label">你</span>
+          </div>
           <div class="gesture-display">
             <video id="webcam" autoplay playsinline></video>
             <canvas id="overlay"></canvas>
@@ -62,7 +61,6 @@
               <span>加载中...</span>
             </div>
           </div>
-          <div class="fighter-label">你</div>
         </div>
       </div>
 

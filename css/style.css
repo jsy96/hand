@@ -71,7 +71,7 @@ body {
 header {
   display: flex;
   align-items: center;
-  gap: 12px;
+  justify-content: center;
   padding: 0 10px;
   flex-shrink: 0;
   height: 60px;
@@ -86,8 +86,6 @@ header {
 
 .score-center {
   text-align: center;
-  flex: 1;
-  min-width: 0;
 }
 
 .score-label {
@@ -142,7 +140,7 @@ main {
   display: flex;
   flex-direction: column;
   align-items: center;
-  gap: 6px;
+  gap: 8px;
 }
 
 .gesture-display {
