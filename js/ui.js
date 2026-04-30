@@ -17,7 +17,7 @@ export function updateLoadingText(text) {
 export function updateScore(score) {
   $id("player-score").textContent = score.player;
   $id("computer-score").textContent = score.computer;
-  $id("round-info").textContent = `第 ${score.rounds} 局 · 平 ${score.draws}`;
+  $id("round-info").textContent = `总 ${score.rounds} 局 · 平 ${score.draws}`;
 }
 
 export function showPlayerGesture(gesture) {
