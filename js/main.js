@@ -2,7 +2,7 @@ import { HandLandmarker, FilesetResolver, DrawingUtils }
   from "../assets/vision_bundle.mjs";
 import { startCamera } from "./camera.js";
 import { classifyGesture } from "./gestureClassifier.js";
-import { resolveRound, isCooldown, resetCooldown, onResult, getScore } from "./gameState.js";
+import { resolveRound, isCooldown, resetCooldown, resetScore, onResult, getScore } from "./gameState.js";
 import { playWin, playLose, playDraw } from "./sound.js";
 import {
   hideLoading, updateLoadingText, updateScore,
@@ -59,6 +59,14 @@ async function init() {
     });
 
     detectLoop(video, canvas, ctx);
+
+    document.getElementById("reset-btn").addEventListener("click", () => {
+      resetScore();
+      updateScore(getScore());
+      hideComputerGesture();
+      hideResult();
+      setHint("举起手势开始对战");
+    });
   } catch (err) {
     console.error("初始化失败:", err);
     updateLoadingText("初始化失败，请刷新页面重试。");

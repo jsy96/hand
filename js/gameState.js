@@ -9,6 +9,10 @@ export function isCooldown() { return cooldown; }
 
 export function resetCooldown() { cooldown = false; }
 
+export function resetScore() {
+  score = { player: 0, computer: 0, draws: 0, rounds: 0 };
+}
+
 export function resolveRound(playerGesture) {
   if (cooldown) return;
   cooldown = true;
